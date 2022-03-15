@@ -1,28 +1,26 @@
-function RatingSelect({ select, selected }) {
-  // NOTE: We don't need local state here as it's a duplicate of parent state
-  // also no real need for useEffect or context
-  // useEffect(() => {
-  //   select(feedbackEdit.item.rating)
-  // }, [feedbackEdit])
+import { useState } from 'react';
 
-  const handleChange = (e) => {
-    select(+e.currentTarget.value);
+function RatingSelect({ select }) {
+  const [selected, setSelected] = useState(10);
+
+  const handleChange = (num) => () => {
+    //change string to number with +
+    setSelected(num);
+    select(num);
   };
 
-  // NOTE: simplified with iteration
   return (
     <ul className='rating'>
-      {Array.from({ length: 10 }, (_, i) => (
-        <li key={`rating-${i + 1}`}>
+      {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => (
+        <li key={num}>
           <input
             type='radio'
-            id={`num${i + 1}`}
+            id={`num${num}`}
             name='rating'
-            value={i + 1}
-            onChange={handleChange}
-            checked={selected === i + 1}
+            onChange={handleChange(num)}
+            checked={selected === num}
           />
-          <label htmlFor={`num${i + 1}`}>{i + 1}</label>
+          <label htmlFor={`num${num}`}>{`${num}`}</label>
         </li>
       ))}
     </ul>
